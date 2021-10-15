@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 public class Season {
@@ -28,6 +29,19 @@ public class Season {
         obtainedBeams =0;
         unkownBeams =0;
     }
+    public Season( String[][] names, boolean[][] gender, LinkedList<Integer> order) {
+        secretMatchMaker = new SecretMatchMaker();
+        contestants = secretMatchMaker.makeCastNoShuffle(names, gender, order);
+        System.out.println(secretMatchMaker.toString());
+        correctMatches = new LinkedList<>();
+        nonMatches = new LinkedList<>();
+        unconfirmed = new LinkedList<>();
+        this.isQueer = false;
+        numPairs =10;
+        knowAllBeams = false;
+        obtainedBeams =0;
+        unkownBeams =0;
+    }
 
     public Season( String[][] names) {
         secretMatchMaker = new SecretMatchMaker();
@@ -44,6 +58,19 @@ public class Season {
 
     public LinkedList<Person> getContestants() {
         return contestants;
+    }
+    public LinkedList<Person>[] getContestantsSplit() {
+        LinkedList<Person> l1 = new LinkedList<>();
+        LinkedList<Person> l2 = new LinkedList<>();
+        for(int i=0; i<contestants.size(); i++){
+            if(contestants.get(i).isMale()){
+                l1.add(contestants.get(i));
+            }
+            else{
+                l2.add(contestants.get(i));
+            }
+        }
+        return new LinkedList[]{l1,l2};
     }
 
     public int ceremony(Picks p){
@@ -99,4 +126,3 @@ public class Season {
         }
     }
 }
-

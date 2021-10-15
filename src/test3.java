@@ -31,6 +31,11 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.SpinnerListModel;
 import java.awt.Component;
+import javax.swing.JPopupMenu;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JTextField;
+import java.awt.Dimension;
 
 public class test3 extends JFrame implements ChangeListener{
 
@@ -53,6 +58,7 @@ public class test3 extends JFrame implements ChangeListener{
 	static DefaultTableModel modelCeremony = new DefaultTableModel();
 	static LinkedList<Person> people = new LinkedList();
 	static Boolean isTruthBooth = true;
+	private JTextField txtNumberOfContestants;
 	/*private JSpinner m1 = new JSpinner(inputModel);
 	private JSpinner m2 = new JSpinner(inputModel);
 	private JSpinner m3 = new JSpinner(inputModel);
@@ -205,6 +211,17 @@ public class test3 extends JFrame implements ChangeListener{
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		
+		JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setToolTipText("menue");
+		popupMenu.setPopupSize(new Dimension(200, 200));
+		popupMenu.setLabel("Play");
+		addPopup(contentPane, popupMenu);
+		
+		txtNumberOfContestants = new JTextField();
+		txtNumberOfContestants.setText("Number of contestants");
+		popupMenu.add(txtNumberOfContestants);
+		txtNumberOfContestants.setColumns(10);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JPanel TtitlePanel = new JPanel();
@@ -294,5 +311,22 @@ public class test3 extends JFrame implements ChangeListener{
 		// TODO Auto-generated method stub
 		tbNames[0] = (String) tbInput1.getValue();
 		tbNames[1] = (String) tbInput2.getValue();
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }

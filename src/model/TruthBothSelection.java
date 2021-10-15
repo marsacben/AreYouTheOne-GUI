@@ -1,4 +1,5 @@
 package model;
+
 public class TruthBothSelection {
     private Match sent;
     private Match dependant;

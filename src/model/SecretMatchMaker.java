@@ -1,15 +1,15 @@
 package model;
+
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
 public class SecretMatchMaker {
     private Hashtable<Person, Person> perfectMatches;
-    //private Hashtable<String, String> perfectMatchesNames;
 
     public SecretMatchMaker() {
         perfectMatches = new Hashtable<>();
-        //perfectMatchesNames = new Hashtable<>();
     }
 
     @Override
@@ -39,37 +39,52 @@ public class SecretMatchMaker {
         }
         return ismatch;
     }
-    
-    /*public boolean isMatch(String p1, String p2){
-        boolean ismatch = false;
-        if (perfectMatchesNames.get(p1).equals(p2) || perfectMatchesNames.get(p2).equals(p1)) {
-            ismatch = true;
-        }
-        return ismatch;
-    }*/
 
     public LinkedList<Person> makeCast(String[][] names, boolean[][] gender){
         LinkedList<Person> contestants = new LinkedList<>();
-        for(int i=0; i< names[0].length; i++){
-            Person a = new Person(names[0][i], gender[0][i]);
-            Person b = new Person(names[1][i], gender[1][i]);
+        for(int i=0; i< names.length; i++){
+        	System.out.println(names.length);
+        	System.out.println(names[i][0]);
+        	System.out.println(names[i][1]);
+        	System.out.println(gender[i][0]);
+        	System.out.println(gender[i][1]);
+            Person a = new Person(names[i][0], gender[i][0]);
+            Person b = new Person(names[i][1], gender[i][1]);
             perfectMatches.put(a, b);
-            //perfectMatchesNames.put(names[0][i], names[1][i]);
-            //perfectMatchesNames.put(names[1][i], names[0][i]);
             contestants.add(a);
             contestants.add(b);
         }
         Collections.shuffle(contestants);
         return contestants;
     }
+    public LinkedList<Person> makeCastNoShuffle(String[][] names, boolean[][] gender, LinkedList<Integer> order){
+        LinkedList<Person> contestants = new LinkedList<>();
+        LinkedList<Person> contestants1 = new LinkedList<>();
+        LinkedList<Person> contestants2 = new LinkedList<>();
+        for(int i=0; i< names[0].length; i++){
+            Person a = new Person(names[0][i], gender[0][i]);
+            Person b = new Person(names[1][i], gender[1][i]);
+            contestants1.add(a);
+            contestants2.add(b);
+        }
+        contestants.addAll(contestants1);
+        contestants.addAll(contestants2);
+        for(int i=0; i< contestants1.size(); i++){
+           // System.out.println("i= " +i+"  m= "+ contestants1.get(i).getName() + "  f= " + contestants2.get(order.get(i)-1).getName() + "  order="+ order.get(i));
+            perfectMatches.put(contestants1.get(i), contestants2.get(order.get(i)-1));
+        }
+        return contestants;
+    }
 
     public LinkedList<Person> makeCast(String[][] names){
         LinkedList<Person> contestants = new LinkedList<>();
-        for(int i=0; i< names[0].length; i++){
-            Person a = new Person(names[0][i]);
-            Person b = new Person(names[1][i]);
+        System.out.println("make cast");
+        for(int i=0; i< names.length; i++){
+        	System.out.println(names[i][0]);
+        	System.out.println(names[i][1]);
+            Person a = new Person(names[i][0]);
+            Person b = new Person(names[i][1]);
             perfectMatches.put(a, b);
-            //perfectMatchesNames.put(names[0][i], names[1][i]);
             contestants.add(a);
             contestants.add(b);
         }
