@@ -30,6 +30,7 @@ import model.Person;
 import model.Picks;
 import model.Results;
 import model.Season;
+import model.TreeTrim;
 
 import javax.swing.JButton;
 import javax.swing.JTable;
@@ -189,11 +190,11 @@ public class TrimAlgoGUI extends JFrame implements ChangeListener{
 	
 	public static Results runSeason(String[][] names, boolean isQueer){
 		Season s;
-		MiniMax util;
+		TreeTrim util;
 		if(isQueer) {
 			s = new Season(names);
 			LinkedList<Person> contestants = s.getContestants();
-			util = new MiniMax(contestants);
+			util = new TreeTrim(contestants);
 		}
 		else {
 			boolean[][] gender= new boolean[numPairs][2];
@@ -207,7 +208,7 @@ public class TrimAlgoGUI extends JFrame implements ChangeListener{
 			LinkedList<Person>[] contestants = s.getContestantsSplit();
 			//System.out.println("group1:" + contestants[0]);
 			//System.out.println("group2:" + contestants[1]);
-			util = new MiniMax(contestants[0], contestants[1]);
+			util = new TreeTrim(contestants[0], contestants[1]);
 		}
         LinkedList<Picks> picks = new LinkedList<>();
         LinkedList<Match> matches = new LinkedList<>();
@@ -231,7 +232,7 @@ public class TrimAlgoGUI extends JFrame implements ChangeListener{
             ceremony.add(beams);
             System.out.println("beams: " + beams);
             util.recordCeremony(beams);
-            ruledOut.add(util.ruledOut);
+            //ruledOut.add(util.ruledOut);
             System.out.println("------");
             i++;
         }
@@ -242,31 +243,7 @@ public class TrimAlgoGUI extends JFrame implements ChangeListener{
         return new Results(picks, matches, tb, ceremony, ruledOut);
     }
 	
-	public static void startSeason() {
-		String[][] names = {{"F1","F2","F3", "F4", "F5","F6","F7", "F8", "F9", "F10"},
-                {"M1","M2","M3","M4", "M5","M6","M7","M8","M9","M10"}};
-        LinkedList<Integer> order = new LinkedList<>();
-        order.add(10);
-        order.add(9);
-        order.add(8);
-        order.add(7);
-        order.add(6);
-        order.add(5);
-        order.add(4);
-        order.add(3);
-        order.add(2);
-        order.add(1);
-        boolean[][] gender= {{false,false,false,false,false,false,false,false,false,false},
-                {true,true,true,true,true,true,true,true,true,true}};
-        //String[][] ans = {{"M10","M9","M8","M7", "M6","M5","M4","M3","M2","M1"}};
-        s = new Season(names, gender, order);
-        LinkedList<Person>[] contestants = s.getContestantsSplit();
-        System.out.println("group1:" + contestants[0]);
-        System.out.println("group2:" + contestants[1]);
-        algorithm = new MiniMax(contestants[0], contestants[1]);
-	}
 	
-
 	/**
 	 * Create the frame.
 	 */
